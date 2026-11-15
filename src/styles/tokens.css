@@ -1,0 +1,97 @@
+:root {
+  /* 1. Brand Colours (Strictly Locked) */
+  --orvex-sky-blue: #73cfff;
+  --orvex-lemon-green: #c8f542;
+  --orvex-cloud-white: #f6fbff;
+  --orvex-deep-navy: #18364b;
+  --orvex-ice-blue: #e5f3fa;
+
+  /* 2. Backgrounds & Surfaces */
+  --orvex-surface-canvas: var(--orvex-cloud-white);
+  --orvex-surface-card: #ffffff;
+  --orvex-surface-subtle: var(--orvex-ice-blue);
+  --orvex-surface-navy: var(--orvex-deep-navy);
+  --orvex-surface-overlay: rgba(24, 54, 75, 0.45);
+
+  /* 3. Text & Iconography */
+  --orvex-text-primary: var(--orvex-deep-navy);
+  --orvex-text-secondary: #3f5b6e;
+  --orvex-text-muted: #5a7486;
+  --orvex-text-on-navy: #f6fbff;
+
+  /* 4. Interactive Action States */
+  --orvex-action-primary: var(--orvex-sky-blue);
+  --orvex-action-primary-hover: #5cc3fa;
+  --orvex-action-primary-active: #49b8f5;
+  --orvex-action-positive: var(--orvex-lemon-green);
+  --orvex-action-positive-hover: #bce934;
+  --orvex-action-positive-active: #afdc28;
+  --orvex-action-secondary: var(--orvex-ice-blue);
+  --orvex-action-secondary-hover: #d5eaf6;
+
+  /* 5. Typography Scale & Weights */
+  --orvex-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Kannada', 'Noto Sans Bengali',
+    'Noto Sans Telugu', 'Noto Sans Malayalam', 'Noto Sans Gujarati', 'Noto Sans Gurmukhi',
+    'Noto Sans Oriya', 'Noto Nastaliq Urdu', sans-serif;
+  --orvex-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --orvex-text-xs: 0.75rem;
+  --orvex-text-sm: 0.875rem;
+  --orvex-text-base: 1rem;
+  --orvex-text-lg: 1.125rem;
+  --orvex-text-xl: 1.25rem;
+  --orvex-text-2xl: 1.5rem;
+  --orvex-text-3xl: 1.875rem;
+
+  --orvex-weight-regular: 400;
+  --orvex-weight-medium: 500;
+  --orvex-weight-semibold: 600;
+  --orvex-weight-bold: 700;
+
+  /* 6. Spacing Scale */
+  --orvex-space-1: 0.25rem;
+  --orvex-space-2: 0.5rem;
+  --orvex-space-3: 0.75rem;
+  --orvex-space-4: 1rem;
+  --orvex-space-5: 1.25rem;
+  --orvex-space-6: 1.5rem;
+  --orvex-space-8: 2rem;
+
+  /* 7. Border Radii */
+  --orvex-radius-sm: 8px;
+  --orvex-radius-control: 12px;
+  --orvex-radius-card: 16px;
+  --orvex-radius-lg: 20px;
+  --orvex-radius-sheet: 24px;
+
+  /* 8. Borders & Shadows */
+  --orvex-border-subtle: #d2e7f4;
+  --orvex-border-input: #cbe2f0;
+  --orvex-border-strong: #a8d4ec;
+  --orvex-border-focus: var(--orvex-deep-navy);
+  --orvex-border-error: #b42318;
+  --orvex-surface-error: #fef3f2;
+  --orvex-shadow-card: 0 2px 10px -2px rgba(24, 54, 75, 0.06);
+  --orvex-shadow-nav: 0 -2px 12px -4px rgba(24, 54, 75, 0.08);
+  --orvex-shadow-dialog: 0 18px 40px -12px rgba(24, 54, 75, 0.22);
+
+  /* 9. Control Sizing & Touch Targets */
+  --orvex-touch-min: 44px;
+  --orvex-btn-height-md: 44px;
+  --orvex-btn-height-lg: 50px;
+  --orvex-input-height: 46px;
+  --orvex-topbar-height: 52px;
+  --orvex-bottomnav-height: 60px;
+
+  /* 10. Focus & Disabled States */
+  --orvex-focus-ring: 0 0 0 3px rgba(115, 207, 255, 0.45);
+  --orvex-disabled-opacity: 0.5;
+
+  /* 11. Responsive Breakpoints (Reference) */
+  --orvex-bp-xs: 360px;
+  --orvex-bp-mobile: 390px;
+  --orvex-bp-mobile-lg: 430px;
+  --orvex-bp-tablet: 768px;
+  --orvex-bp-desktop: 1440px;
+}

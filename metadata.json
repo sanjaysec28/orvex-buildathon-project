@@ -1,0 +1,6 @@
+{
+  "name": "ORVEX",
+  "description": "The Future Moves Through Us. AI-powered freight marketplace foundation for India (Chennai ↔ Bengaluru).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

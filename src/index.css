@@ -1,0 +1,67 @@
+@import "tailwindcss";
+@import "./styles/tokens.css";
+
+@theme {
+  --color-orvex-sky: #73cfff;
+  --color-orvex-lemon: #c8f542;
+  --color-orvex-cloud: #f6fbff;
+  --color-orvex-navy: #18364b;
+  --color-orvex-ice: #e5f3fa;
+  --font-sans: var(--orvex-font-sans);
+  --font-mono: var(--orvex-font-mono);
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--orvex-surface-canvas);
+    color: var(--orvex-text-primary);
+    font-family: var(--orvex-font-sans);
+    font-size: var(--orvex-text-base);
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  [dir='rtl'] body {
+    letter-spacing: 0;
+    line-height: 1.75;
+  }
+
+  [dir='rtl'] h1,
+  [dir='rtl'] h2,
+  [dir='rtl'] h3 {
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--orvex-border-focus);
+    outline-offset: 2px;
+  }
+}
+
+@keyframes orvex-splash-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.orvex-splash-fade {
+  animation: orvex-splash-fade-in 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orvex-splash-fade {
+    animation: none;
+    opacity: 1;
+  }
+}

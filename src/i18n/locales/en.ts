@@ -1,0 +1,183 @@
+export const enTranslation = {
+  brand: {
+    name: 'ORVEX',
+    tagline: 'The Future Moves Through Us.',
+    category: 'AI-powered Freight Marketplace',
+    market: 'India',
+    corridorLabel: 'Initial Freight Corridor',
+    corridorValue: 'Chennai ↔ Bengaluru',
+    phaseLabel: 'Application Foundation · Phase 01',
+  },
+  language: {
+    title: 'Choose Your Language',
+    subtitle: 'Select your preferred language to continue',
+    searchPlaceholder: 'Search languages...',
+    searchLabel: 'Search languages',
+    emptyResults: 'No matching language found.',
+    clearSearch: 'Clear search',
+    selectedLabel: 'Selected',
+    rtlNotice: 'Right-to-left (RTL) layout active',
+    coverageBaseline: 'Foundation UI translated',
+    coveragePending: 'English fallback · Verified translation in multilingual phase',
+    changeLanguage: 'Language',
+    modalTitle: 'Switch language',
+    modalSubtitle: 'Changes apply immediately without signing out.',
+    closeModal: 'Close',
+    countSummary: '{{count}} languages configured',
+    continue: 'Continue',
+  },
+  roles: {
+    sectionTitle: 'Choose your role',
+    sectionSubtitle: 'Select how you will use ORVEX.',
+    transporter: {
+      title: 'Transporter / Truck Owner',
+      subtitle: 'Discover compatible return shipments and improve vehicle utilisation.',
+      cta: 'Open Transporter Workspace',
+    },
+    shipper: {
+      title: 'Shipper / Business',
+      subtitle: 'Post freight requirements and find suitable transportation.',
+      cta: 'Open Shipper Workspace',
+    },
+    switchRole: 'Switch role',
+    switchToTransporter: 'Switch to Transporter',
+    switchToShipper: 'Switch to Shipper',
+    currentRole: 'Active workspace',
+  },
+  auth: {
+    title: 'Authentication foundation',
+    subtitle: 'Role-aware sign-in entry prepared for Firebase Authentication in the next phase.',
+    phaseNotice: 'Sign-in, OTP verification, and session tokens are not active in Phase 01.',
+    roleLabel: 'Entry context',
+    continueTransporter: 'Preview Transporter Workspace',
+    continueShipper: 'Preview Shipper Workspace',
+    backToLanguage: 'Back to Language & Role Entry',
+    navLabel: 'Auth Entry',
+  },
+  nav: {
+    home: 'Home',
+    trips: 'Trips',
+    shipments: 'Shipments',
+    profile: 'Profile',
+    language: 'Language',
+    authFoundation: 'Auth Entry',
+    switchWorkspace: 'Switch Workspace',
+    languageEntry: 'Language Setup',
+  },
+  transporter: {
+    home: {
+      title: 'Transporter Workspace',
+      subtitle: 'Foundation shell for truck owners and fleet operators.',
+      objective: 'Designed to help truck owners discover compatible return loads along Chennai ↔ Bengaluru.',
+      modulesTitle: 'Prepared Transporter Modules',
+      modulesSubtitle: 'Routes and module boundaries prepared for upcoming phases.',
+    },
+    trips: {
+      title: 'Trips & Return Loads',
+      subtitle: 'Foundation route for trip management, return-load discovery, and matching.',
+      emptyTitle: 'Trip workflows open in later phases',
+      emptyBody: 'Vehicle assignment, return-load discovery, and route tracking will connect here once backend services are enabled.',
+    },
+    profile: {
+      title: 'Transporter Profile',
+      subtitle: 'Foundation route for transporter details, fleet records, and language preferences.',
+      emptyTitle: 'Transporter profile pending authentication phase',
+      emptyBody: 'Your chosen language persists locally and switches across the workspace without signing out.',
+    },
+    modules: {
+      profileVehicles: {
+        title: 'Profile & Vehicle Management',
+        summary: 'Transporter onboarding, fleet records, and truck capacity profiles.',
+      },
+      tripsReturnLoads: {
+        title: 'Trip & Return-Load Discovery',
+        summary: 'Corridor trip planning and compatible return freight matching.',
+      },
+      profitabilityOffers: {
+        title: 'Profitability & Offers',
+        summary: 'Trip earnings visibility, rate negotiation, and load offers.',
+      },
+      bookingsTracking: {
+        title: 'Bookings & Tracking',
+        summary: 'Confirmed load execution and corridor progress tracking.',
+      },
+    },
+  },
+  shipper: {
+    home: {
+      title: 'Shipper Workspace',
+      subtitle: 'Foundation shell for businesses and freight consignors.',
+      objective: 'Designed to help shippers find suitable transportation along Chennai ↔ Bengaluru.',
+      modulesTitle: 'Prepared Shipper Modules',
+      modulesSubtitle: 'Routes and module boundaries prepared for upcoming phases.',
+    },
+    shipments: {
+      title: 'Shipments',
+      subtitle: 'Foundation route for shipment creation, vehicle discovery, and offers.',
+      emptyTitle: 'Shipment workflows open in later phases',
+      emptyBody: 'Shipment posting, transporter offers, and booking confirmations will connect here in upcoming phases.',
+    },
+    profile: {
+      title: 'Business Profile',
+      subtitle: 'Foundation route for business identity, GST/dispatch records, and language preferences.',
+      emptyTitle: 'Business profile pending authentication phase',
+      emptyBody: 'Language switching remains available across every Shipper route without losing session context.',
+    },
+    modules: {
+      businessProfile: {
+        title: 'Business Profile',
+        summary: 'Shipper verification, dispatch locations, and contact settings.',
+      },
+      shipmentCreation: {
+        title: 'Shipment Creation & Management',
+        summary: 'Structured cargo posting and active shipment tracking.',
+      },
+      vehicleDiscovery: {
+        title: 'Vehicle Discovery & Offers',
+        summary: 'Compatible truck discovery, transporter offers, and negotiations.',
+      },
+      bookingsTracking: {
+        title: 'Bookings & Tracking',
+        summary: 'Confirmed dispatches and delivery status visibility.',
+      },
+    },
+  },
+  architecture: {
+    integrationsTitle: 'Service Integration Contracts',
+    integrationsSubtitle: 'TypeScript service boundaries prepared for future phases. None are connected in Phase 01.',
+    statusNotConnected: 'Contract prepared · Not connected',
+    providers: {
+      firebase_auth: {
+        label: 'Firebase Authentication',
+        purpose: 'Phone/OTP sign-in and role-based identity tokens.',
+      },
+      cloud_firestore: {
+        label: 'Cloud Firestore',
+        purpose: 'Persistent transporter, shipper, vehicle, and shipment records.',
+      },
+      fastapi_backend: {
+        label: 'Python FastAPI + Cloud Run',
+        purpose: 'Core marketplace APIs and freight matching orchestration.',
+      },
+      gemini_api: {
+        label: 'Google Gemini & Agent Development Kit',
+        purpose: 'AI-assisted return-load matching and multilingual workflows.',
+      },
+      google_maps: {
+        label: 'Google Maps Platform',
+        purpose: 'Corridor routing and distance geometry for Chennai ↔ Bengaluru.',
+      },
+    },
+  },
+  states: {
+    loadingTitle: 'Loading ORVEX',
+    loadingMessage: 'Preparing workspace foundation...',
+    errorTitle: 'Something went wrong',
+    errorMessage: 'An unexpected error occurred while rendering this view.',
+    retry: 'Reload application',
+    notFoundTitle: 'Page not found',
+    notFoundMessage: 'The requested route is not part of the ORVEX Phase 01 foundation.',
+    goHome: 'Return to Language & Role Entry',
+    plannedPhaseTag: 'Upcoming phase',
+  },
+} as const;
