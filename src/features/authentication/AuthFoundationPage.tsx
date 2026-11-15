@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
 import { ArrowLeft, Building2, ShieldCheck, Truck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   BrandWordmark,
   Button,
@@ -11,7 +10,8 @@ import {
 } from '../../components/ui';
 import { useRoleContext } from '../../hooks/useRoleContext';
 import { firebaseAuthContract } from '../../services/auth/authContract';
-import { getWorkspaceBasePath, isValidRole } from '../../utils/roleRouting';
+import { getWorkspaceBasePath } from '../../utils/roleRouting';
+import { TransporterLoginPage } from './TransporterLoginPage';
 
 export function AuthFoundationPage() {
   const { t } = useTranslation();
@@ -20,13 +20,18 @@ export function AuthFoundationPage() {
   const { role, setRole } = useRoleContext();
 
   const roleParam = searchParams.get('role');
-  const activeRole = isValidRole(roleParam) ? roleParam : role;
 
-  useEffect(() => {
-    if (isValidRole(roleParam) && roleParam !== role) {
-      setRole(roleParam);
-    }
-  }, [roleParam, role, setRole]);
+  // Guard: never allow an active Shipper session to enter Transporter Login or overwrite role
+  if (role === 'shipper' && roleParam === 'transporter') {
+    return <Navigate to="/auth?role=shipper" replace />;
+  }
+
+  // Render Page 04 — Transporter Login when active role is transporter and route is not shipper
+  if (role === 'transporter' && roleParam !== 'shipper') {
+    return <TransporterLoginPage />;
+  }
+
+  const activeRole = roleParam === 'shipper' ? 'shipper' : role;
 
   const openWorkspace = (targetRole: 'transporter' | 'shipper') => {
     setRole(targetRole);
@@ -41,11 +46,11 @@ export function AuthFoundationPage() {
             <BrandWordmark size="md" />
           </Link>
           <Link
-            to="/"
+            to="/role"
             className="min-h-[44px] px-3.5 rounded-xl inline-flex items-center gap-2 text-sm font-semibold text-[#18364B] hover:bg-[#E5F3FA]"
           >
             <ArrowLeft className="w-4 h-4 rtl:rotate-180" aria-hidden="true" />
-            <span>{t('nav.languageEntry')}</span>
+            <span>{t('roles.switchRole')}</span>
           </Link>
         </div>
       </header>
