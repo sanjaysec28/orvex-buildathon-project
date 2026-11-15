@@ -5,13 +5,27 @@ import { ApplicationStatusPage } from '../features/registration/ApplicationStatu
 import { TransporterRegistrationPage } from '../features/registration/TransporterRegistrationPage';
 import { LanguageSelectionPage } from '../features/language/LanguageSelectionPage';
 import { RoleSelectionPage } from '../features/role/RoleSelectionPage';
+import { ShipperAuthGuard } from '../features/shipper/ShipperAuthGuard';
 import { ShipperHomePage } from '../features/shipper/ShipperHomePage';
 import { ShipperProfilePage } from '../features/shipper/ShipperProfilePage';
 import { ShipperShipmentsPage } from '../features/shipper/ShipperShipmentsPage';
+import { ShipperApplicationSubmittedPage } from '../features/shipperRegistration/ShipperApplicationSubmittedPage';
+import { ShipperRegistrationPage } from '../features/shipperRegistration/ShipperRegistrationPage';
 import { SplashScreenPage } from '../features/splash/SplashScreenPage';
-import { TransporterHomePage } from '../features/transporter/TransporterHomePage';
-import { TransporterProfilePage } from '../features/transporter/TransporterProfilePage';
-import { TransporterTripsPage } from '../features/transporter/TransporterTripsPage';
+import { TransporterAuthGuard } from '../features/transporterDashboard/components/TransporterAuthGuard';
+import { TransporterAvailabilityPage } from '../features/transporterDashboard/pages/TransporterAvailabilityPage';
+import { TransporterDashboardPage } from '../features/transporterDashboard/pages/TransporterDashboardPage';
+import { TransporterDocumentsPage } from '../features/transporterDashboard/pages/TransporterDocumentsPage';
+import { TransporterDriversPage } from '../features/transporterDashboard/pages/TransporterDriversPage';
+import { TransporterEarningsPage } from '../features/transporterDashboard/pages/TransporterEarningsPage';
+import { TransporterLoadDetailPage } from '../features/transporterDashboard/pages/TransporterLoadDetailPage';
+import { TransporterLoadsPage } from '../features/transporterDashboard/pages/TransporterLoadsPage';
+import { TransporterNotificationsPage } from '../features/transporterDashboard/pages/TransporterNotificationsPage';
+import { TransporterOffersPage } from '../features/transporterDashboard/pages/TransporterOffersPage';
+import { TransporterProfileSubPage } from '../features/transporterDashboard/pages/TransporterProfileSubPage';
+import { TransporterTrackingPage } from '../features/transporterDashboard/pages/TransporterTrackingPage';
+import { TransporterTripsSubPage } from '../features/transporterDashboard/pages/TransporterTripsSubPage';
+import { TransporterVehiclesPage } from '../features/transporterDashboard/pages/TransporterVehiclesPage';
 import { NotFoundPage } from './NotFoundPage';
 
 export function AppRoutes() {
@@ -25,13 +39,33 @@ export function AppRoutes() {
       <Route path="/auth/register" element={<TransporterRegistrationPage />} />
       <Route path="/auth/register/status" element={<ApplicationStatusPage />} />
 
-      <Route path="/transporter" element={<TransporterHomePage />} />
-      <Route path="/transporter/trips" element={<TransporterTripsPage />} />
-      <Route path="/transporter/profile" element={<TransporterProfilePage />} />
+      <Route path="/shipper/register" element={<ShipperRegistrationPage />} />
+      <Route
+        path="/shipper/application-submitted"
+        element={<ShipperApplicationSubmittedPage />}
+      />
 
-      <Route path="/shipper" element={<ShipperHomePage />} />
-      <Route path="/shipper/shipments" element={<ShipperShipmentsPage />} />
-      <Route path="/shipper/profile" element={<ShipperProfilePage />} />
+      <Route path="/transporter" element={<TransporterAuthGuard />}>
+        <Route index element={<TransporterDashboardPage />} />
+        <Route path="vehicles" element={<TransporterVehiclesPage />} />
+        <Route path="drivers" element={<TransporterDriversPage />} />
+        <Route path="loads" element={<TransporterLoadsPage />} />
+        <Route path="loads/:loadId" element={<TransporterLoadDetailPage />} />
+        <Route path="availability" element={<TransporterAvailabilityPage />} />
+        <Route path="trips" element={<TransporterTripsSubPage />} />
+        <Route path="offers" element={<TransporterOffersPage />} />
+        <Route path="earnings" element={<TransporterEarningsPage />} />
+        <Route path="tracking" element={<TransporterTrackingPage />} />
+        <Route path="notifications" element={<TransporterNotificationsPage />} />
+        <Route path="documents" element={<TransporterDocumentsPage />} />
+        <Route path="profile" element={<TransporterProfileSubPage />} />
+      </Route>
+
+      <Route path="/shipper" element={<ShipperAuthGuard />}>
+        <Route index element={<ShipperHomePage />} />
+        <Route path="shipments" element={<ShipperShipmentsPage />} />
+        <Route path="profile" element={<ShipperProfilePage />} />
+      </Route>
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

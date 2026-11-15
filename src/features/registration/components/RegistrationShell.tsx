@@ -144,11 +144,23 @@ export function RegistrationShell({
 export function LegalPolicyModal({
   topic,
   onClose,
+  roleType = 'transporter',
 }: {
   topic: 'terms' | 'privacy' | null;
   onClose: () => void;
+  roleType?: 'transporter' | 'shipper';
 }) {
   if (!topic) return null;
+
+  const termsMessage =
+    roleType === 'shipper'
+      ? 'By registering as a Shipper on ORVEX, you confirm that all business, shipping profile, and authorised representative details submitted are accurate. Shipment posting access remains restricted until application verification is completed.'
+      : 'By registering as a Transporter on ORVEX, you confirm that all vehicle, business, and driver details submitted are accurate and authorised. Freight booking access remains restricted until application verification is completed.';
+
+  const privacyMessage =
+    roleType === 'shipper'
+      ? 'ORVEX stores KYC and business verification documents in private server storage for verification review only. Sensitive document files are never exposed via public URLs, and plaintext passwords or OTP codes are never stored in registration drafts.'
+      : 'ORVEX stores KYC and driver verification documents in private server storage for verification review only. Sensitive document files are never exposed via public URLs, and plaintext passwords or OTP codes are never stored in registration drafts.';
 
   return (
     <div
@@ -173,9 +185,7 @@ export function LegalPolicyModal({
         </div>
 
         <p className="text-sm text-[#3F5B6E] leading-relaxed">
-          {topic === 'terms'
-            ? 'By registering as a Transporter on ORVEX, you confirm that all vehicle, business, and driver details submitted are accurate and authorised. Freight booking access remains restricted until application verification is completed.'
-            : 'ORVEX stores KYC and driver verification documents in private server storage for verification review only. Sensitive document files are never exposed via public URLs, and plaintext passwords or OTP codes are never stored in registration drafts.'}
+          {topic === 'terms' ? termsMessage : privacyMessage}
         </p>
 
         <button

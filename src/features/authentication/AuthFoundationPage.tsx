@@ -1,6 +1,6 @@
 import { ArrowLeft, Building2, ShieldCheck, Truck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   BrandWordmark,
   Button,
@@ -11,6 +11,7 @@ import {
 import { useRoleContext } from '../../hooks/useRoleContext';
 import { firebaseAuthContract } from '../../services/auth/authContract';
 import { getWorkspaceBasePath } from '../../utils/roleRouting';
+import { ShipperLoginPage } from '../shipperAuthentication/ShipperLoginPage';
 import { TransporterLoginPage } from './TransporterLoginPage';
 
 export function AuthFoundationPage() {
@@ -21,14 +22,14 @@ export function AuthFoundationPage() {
 
   const roleParam = searchParams.get('role');
 
-  // Guard: never allow an active Shipper session to enter Transporter Login or overwrite role
-  if (role === 'shipper' && roleParam === 'transporter') {
-    return <Navigate to="/auth?role=shipper" replace />;
+  // Render Page 04 — Transporter Login when explicitly requested or when active role is transporter
+  if (roleParam === 'transporter' || (role === 'transporter' && roleParam !== 'shipper')) {
+    return <TransporterLoginPage />;
   }
 
-  // Render Page 04 — Transporter Login when active role is transporter and route is not shipper
-  if (role === 'transporter' && roleParam !== 'shipper') {
-    return <TransporterLoginPage />;
+  // Render Screen 01 — Shipper Login when role is shipper or ?role=shipper
+  if (roleParam === 'shipper' || role === 'shipper') {
+    return <ShipperLoginPage />;
   }
 
   const activeRole = roleParam === 'shipper' ? 'shipper' : role;

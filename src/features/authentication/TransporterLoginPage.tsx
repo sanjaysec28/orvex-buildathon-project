@@ -1,4 +1,4 @@
-import { AlertCircle, ArrowRight, Loader2, Truck } from 'lucide-react';
+import { AlertCircle, ArrowRight, FlaskConical, Loader2, Truck } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,7 +12,13 @@ import {
   requestTransporterWhatsAppOtp,
   type TransporterAuthErrorCode,
 } from '../../services/auth/transporterAuthService';
+import {
+  fetchAuthSession,
+  loginAsDemoRole,
+  mapDemoLoginErrorMessage,
+} from '../../services/transporter/transporterDashboardService';
 import { getWorkspaceBasePath } from '../../utils/roleRouting';
+import { useDemoLoginAvailability } from '../demo/useDemoLoginAvailability';
 import { AuthDivider } from './components/AuthDivider';
 import { PasswordField } from './components/PasswordField';
 import { PhoneNumberField } from './components/PhoneNumberField';
@@ -37,7 +43,8 @@ function mapAuthErrorToTranslationKey(errorCode?: TransporterAuthErrorCode): str
 export function TransporterLoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { role } = useRoleContext();
+  const { role, setRole } = useRoleContext();
+  const demoLoginAvailable = useDemoLoginAvailability();
 
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
@@ -46,7 +53,9 @@ export function TransporterLoginPage() {
   const [mobileError, setMobileError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [demoError, setDemoError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDemoSubmitting, setIsDemoSubmitting] = useState(false);
 
   const handleRememberMeChange = (checked: boolean) => {
     setRememberMe(checked);
@@ -122,7 +131,7 @@ export function TransporterLoginPage() {
   };
 
   const handleWhatsAppLogin = async () => {
-    if (isSubmitting) return;
+    if (isSubmitting || isDemoSubmitting) return;
     setIsSubmitting(true);
     try {
       const result = await requestTransporterWhatsAppOtp();
@@ -133,6 +142,46 @@ export function TransporterLoginPage() {
       setStatusMessage(t('auth.errors.networkError'));
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleDemoTransporterLogin = async () => {
+    if (isSubmitting || isDemoSubmitting) return;
+    setIsDemoSubmitting(true);
+    setStatusMessage(null);
+    setDemoError(null);
+    try {
+      const result = await loginAsDemoRole('transporter');
+      if (!result.ok) {
+        setDemoError(result.message);
+        return;
+      }
+
+      if (result.user.role !== 'transporter') {
+        setDemoError(mapDemoLoginErrorMessage('ROLE_MISMATCH'));
+        return;
+      }
+
+      // Verify that the browser accepted and sent back the signed HttpOnly session cookie
+      const sessionCheck = await fetchAuthSession();
+      if (!sessionCheck.authenticated || !sessionCheck.user) {
+        setDemoError(
+          'Your browser blocked the HttpOnly demo session cookie (common when third-party cookies are disabled inside an embedded preview iframe). Allow cookies for this site or open the app URL in a new tab.',
+        );
+        return;
+      }
+
+      if (sessionCheck.user.role !== 'transporter') {
+        setDemoError(mapDemoLoginErrorMessage('ROLE_MISMATCH'));
+        return;
+      }
+
+      setRole('transporter');
+      navigate('/transporter', { replace: true });
+    } catch {
+      setDemoError(mapDemoLoginErrorMessage('NETWORK_ERROR'));
+    } finally {
+      setIsDemoSubmitting(false);
     }
   };
 
@@ -352,9 +401,42 @@ export function TransporterLoginPage() {
             <WhatsAppLoginButton
               label={t('auth.loginWithWhatsApp')}
               onClick={handleWhatsAppLogin}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isDemoSubmitting}
             />
           </form>
+
+          {demoLoginAvailable ? (
+            <div className="mt-3 pt-1 space-y-2.5">
+              <AuthDivider label="DEV DEMO" />
+              {demoError ? (
+                <div
+                  role="alert"
+                  className="rounded-2xl border border-[#F5B5B5] bg-[#FEF3F2] px-3.5 py-2.5 text-[12.5px] leading-snug text-[#B42318] flex items-start gap-2"
+                >
+                  <AlertCircle className="w-4 h-4 text-[#B42318] shrink-0 mt-0.5" aria-hidden="true" />
+                  <span>{demoError}</span>
+                </div>
+              ) : null}
+              <button
+                type="button"
+                onClick={() => void handleDemoTransporterLogin()}
+                disabled={isSubmitting || isDemoSubmitting}
+                className="w-full h-[46px] rounded-full bg-[#EAF5FD] border border-[#BFE2F5] hover:border-[#73CFFF] hover:bg-[#DCEFFC] text-[#18364B] font-bold text-[14px] inline-flex items-center justify-center gap-2 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[#18364B] focus-visible:outline-offset-2 disabled:opacity-60 disabled:cursor-wait"
+              >
+                {isDemoSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                    <span>Opening Demo Transporter...</span>
+                  </>
+                ) : (
+                  <>
+                    <FlaskConical className="w-4 h-4 text-[#1570EF]" aria-hidden="true" />
+                    <span>Continue as Demo Transporter</span>
+                  </>
+                )}
+              </button>
+            </div>
+          ) : null}
         </div>
 
         {/* Create Account footer link */}

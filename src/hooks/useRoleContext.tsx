@@ -6,6 +6,7 @@ const ROLE_STORAGE_KEY = 'orvex.role.preview';
 interface RoleContextValue {
   role: UserRole;
   setRole: (nextRole: UserRole) => void;
+  clearRole: () => void;
 }
 
 const RoleContext = createContext<RoleContextValue | null>(null);
@@ -33,7 +34,18 @@ export function RoleProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const value = useMemo(() => ({ role, setRole }), [role, setRole]);
+  const clearRole = useCallback(() => {
+    setRoleState('transporter');
+    try {
+      if (typeof window !== 'undefined') {
+        window.localStorage.removeItem(ROLE_STORAGE_KEY);
+      }
+    } catch {
+      // Ignore storage errors
+    }
+  }, []);
+
+  const value = useMemo(() => ({ role, setRole, clearRole }), [role, setRole, clearRole]);
 
   return <RoleContext.Provider value={value}>{children}</RoleContext.Provider>;
 }
