@@ -6,3 +6,4 @@ coverage/
 *.log
 .env*
 !.env.example
+.orvex_private_storage/

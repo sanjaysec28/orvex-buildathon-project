@@ -1,7 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import { AuthFoundationPage } from '../features/authentication/AuthFoundationPage';
 import { AuthRecoveryFoundationPage } from '../features/authentication/AuthRecoveryFoundationPage';
-import { TransporterRegisterFoundationPage } from '../features/authentication/TransporterRegisterFoundationPage';
+import { ApplicationStatusPage } from '../features/registration/ApplicationStatusPage';
+import { TransporterRegistrationPage } from '../features/registration/TransporterRegistrationPage';
 import { LanguageSelectionPage } from '../features/language/LanguageSelectionPage';
 import { RoleSelectionPage } from '../features/role/RoleSelectionPage';
 import { ShipperHomePage } from '../features/shipper/ShipperHomePage';
@@ -21,7 +22,8 @@ export function AppRoutes() {
       <Route path="/role" element={<RoleSelectionPage />} />
       <Route path="/auth" element={<AuthFoundationPage />} />
       <Route path="/auth/forgot-password" element={<AuthRecoveryFoundationPage />} />
-      <Route path="/auth/register" element={<TransporterRegisterFoundationPage />} />
+      <Route path="/auth/register" element={<TransporterRegistrationPage />} />
+      <Route path="/auth/register/status" element={<ApplicationStatusPage />} />
 
       <Route path="/transporter" element={<TransporterHomePage />} />
       <Route path="/transporter/trips" element={<TransporterTripsPage />} />
