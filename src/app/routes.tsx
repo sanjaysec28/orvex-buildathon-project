@@ -7,8 +7,19 @@ import { LanguageSelectionPage } from '../features/language/LanguageSelectionPag
 import { RoleSelectionPage } from '../features/role/RoleSelectionPage';
 import { ShipperAuthGuard } from '../features/shipper/ShipperAuthGuard';
 import { ShipperHomePage } from '../features/shipper/ShipperHomePage';
+import { ShipperPostShipmentPage } from '../features/shipper/ShipperPostShipmentPage';
 import { ShipperProfilePage } from '../features/shipper/ShipperProfilePage';
 import { ShipperShipmentsPage } from '../features/shipper/ShipperShipmentsPage';
+import {
+  ShipperBookingsPage,
+  ShipperDocumentsPage,
+  ShipperFindTrucksPage,
+  ShipperLocationsPage,
+  ShipperNotificationsPage,
+  ShipperOffersPage,
+  ShipperPaymentsPage,
+  ShipperTrackingPage,
+} from '../features/shipper/ShipperWorkspacePages';
 import { ShipperApplicationSubmittedPage } from '../features/shipperRegistration/ShipperApplicationSubmittedPage';
 import { ShipperRegistrationPage } from '../features/shipperRegistration/ShipperRegistrationPage';
 import { SplashScreenPage } from '../features/splash/SplashScreenPage';
@@ -63,7 +74,16 @@ export function AppRoutes() {
 
       <Route path="/shipper" element={<ShipperAuthGuard />}>
         <Route index element={<ShipperHomePage />} />
+        <Route path="post" element={<ShipperPostShipmentPage />} />
         <Route path="shipments" element={<ShipperShipmentsPage />} />
+        <Route path="trucks" element={<ShipperFindTrucksPage />} />
+        <Route path="offers" element={<ShipperOffersPage />} />
+        <Route path="bookings" element={<ShipperBookingsPage />} />
+        <Route path="tracking" element={<ShipperTrackingPage />} />
+        <Route path="payments" element={<ShipperPaymentsPage />} />
+        <Route path="locations" element={<ShipperLocationsPage />} />
+        <Route path="notifications" element={<ShipperNotificationsPage />} />
+        <Route path="documents" element={<ShipperDocumentsPage />} />
         <Route path="profile" element={<ShipperProfilePage />} />
       </Route>
 

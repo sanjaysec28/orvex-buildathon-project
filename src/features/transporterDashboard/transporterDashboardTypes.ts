@@ -161,6 +161,18 @@ export interface TransporterDashboardOverview {
   mapsConfigured: boolean;
 }
 
+export type ShipperShipmentStatus =
+  | 'Draft'
+  | 'Posted'
+  | 'Finding Transporter'
+  | 'Open for Quotes'
+  | 'Offer Received'
+  | 'Booked'
+  | 'In Transit'
+  | 'Delivered'
+  | 'Completed'
+  | 'Cancelled';
+
 export interface ShipperDemoShipment {
   id: string;
   originCity: string;
@@ -171,7 +183,7 @@ export interface ShipperDemoShipment {
   weightTonnes: number;
   requiredVehicleSpec: string;
   pickupDateLabel: string;
-  status: 'Open for Quotes' | 'Booked' | 'In Transit' | 'Delivered';
+  status: ShipperShipmentStatus;
   estimatedBudgetInr: number;
 }
 
@@ -180,8 +192,12 @@ export interface ShipperDemoTransporterListing {
   transporterName: string;
   vehicleSpec: string;
   baseCorridor: string;
+  operatingRegion?: string;
+  rating?: number | null;
+  completedTrips?: number | null;
   availableCount: number;
   verificationLabel: string;
+  isDemoRecord?: boolean;
 }
 
 export interface ShipperDemoOffer {
@@ -203,6 +219,23 @@ export interface ShipperDemoBooking {
   cargoSummary: string;
   agreedFreightInr: number;
   status: 'Confirmed' | 'In Transit' | 'Delivered';
+  etaLabel?: string;
+}
+
+export interface ShipperSavedLocation {
+  id: string;
+  label: string;
+  city: string;
+  state: string;
+  addressLine: string;
+  locationType: 'Pickup Hub' | 'Warehouse' | 'Regular Delivery';
+}
+
+export interface ShipperDashboardMetrics {
+  totalShipments: number;
+  activeBookings: number;
+  openOffers: number;
+  monthlySpendInr: number;
 }
 
 export interface ShipperDashboardOverview {
@@ -215,8 +248,12 @@ export interface ShipperDashboardOverview {
     corridors: string[];
     typicalGoods: string;
   };
+  metrics: ShipperDashboardMetrics;
   shipments: ShipperDemoShipment[];
   transporters: ShipperDemoTransporterListing[];
   offers: ShipperDemoOffer[];
   bookings: ShipperDemoBooking[];
+  notifications: TransporterNotification[];
+  unreadNotificationCount: number;
+  savedLocations: ShipperSavedLocation[];
 }

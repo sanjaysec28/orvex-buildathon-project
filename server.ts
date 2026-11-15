@@ -937,7 +937,14 @@ async function startServer() {
 
   async function ensureDemoShipperWorkspace(): Promise<ShipperDashboardOverview> {
     const existing = await readJsonFile<ShipperDashboardOverview | null>(DEMO_SHIPPER_FILE, null);
-    if (existing && existing.profile?.uid === DEMO_SHIPPER_UID && existing.profile.isDemo) {
+    if (
+      existing &&
+      existing.profile?.uid === DEMO_SHIPPER_UID &&
+      existing.profile.isDemo &&
+      existing.metrics &&
+      Array.isArray(existing.notifications) &&
+      Array.isArray(existing.savedLocations)
+    ) {
       return existing;
     }
     const fresh = createInitialDemoShipperWorkspace();
@@ -1796,14 +1803,36 @@ async function startServer() {
           businessName: auth.profile.companyName ?? auth.profile.displayName,
           accountType: auth.profile.accountTypeLabel ?? 'Registered Business',
           verificationStatus: auth.profile.verificationStatus,
-          primaryHub: [auth.profile.city, auth.profile.state].filter(Boolean).join(', ') || 'Chennai, Tamil Nadu',
-          corridors: ['Chennai ↔ Bengaluru'],
+          primaryHub:
+            [auth.profile.city, auth.profile.state].filter(Boolean).join(', ') ||
+            'India Operations',
+          corridors: [],
           typicalGoods: 'General Freight',
+        },
+        metrics: {
+          totalShipments: 0,
+          activeBookings: 0,
+          openOffers: 0,
+          monthlySpendInr: 0,
         },
         shipments: [],
         transporters: [],
         offers: [],
         bookings: [],
+        notifications: [],
+        unreadNotificationCount: 0,
+        savedLocations: auth.profile.city
+          ? [
+              {
+                id: 'primary_hub',
+                label: 'Primary Business Hub',
+                city: auth.profile.city,
+                state: auth.profile.state ?? '',
+                addressLine: [auth.profile.city, auth.profile.state].filter(Boolean).join(', '),
+                locationType: 'Pickup Hub',
+              },
+            ]
+          : [],
       } satisfies ShipperDashboardOverview,
     });
   });
@@ -1842,11 +1871,22 @@ async function startServer() {
       weightTonnes: Number(weightTonnes) > 0 ? Number(weightTonnes) : 8,
       requiredVehicleSpec: requiredVehicleSpec?.trim() || '17 ft · Closed Body',
       pickupDateLabel: 'Demo · Scheduled Tomorrow',
-      status: 'Open for Quotes',
+      status: 'Posted',
       estimatedBudgetInr: Number(estimatedBudgetInr) >= 1000 ? Math.round(Number(estimatedBudgetInr)) : 65000,
     };
 
     overview.shipments.unshift(newShipment);
+    overview.metrics.totalShipments += 1;
+    overview.notifications.unshift({
+      id: `demo_shp_ntf_${crypto.randomBytes(4).toString('hex')}`,
+      title: `Demo Shipment ${newShipment.id} Posted`,
+      message: `${newShipment.originCity} → ${newShipment.destinationCity} (${newShipment.cargoType}) added to demo workspace.`,
+      category: 'load',
+      read: false,
+      createdAt: new Date().toISOString(),
+      targetPath: `/shipper/shipments?id=${encodeURIComponent(newShipment.id)}`,
+    });
+    overview.unreadNotificationCount = overview.notifications.filter((n) => !n.read).length;
     await writeJsonAtomic(DEMO_SHIPPER_FILE, overview);
     res.status(201).json({ ok: true, shipment: newShipment });
   });
@@ -1885,10 +1925,34 @@ async function startServer() {
         : 'Sample Shipment',
       agreedFreightInr: offer.quotedFreightInr,
       status: 'Confirmed',
+      etaLabel: 'Demo Dispatch · Confirmed',
     });
+    overview.metrics.activeBookings += 1;
+    overview.metrics.openOffers = Math.max(0, overview.metrics.openOffers - 1);
+    overview.metrics.monthlySpendInr += offer.quotedFreightInr;
 
     await writeJsonAtomic(DEMO_SHIPPER_FILE, overview);
     res.json({ ok: true, overview });
+  });
+
+  app.post('/api/shipper/notifications/read', async (req, res) => {
+    const auth = await requireApprovedShipper(req, res);
+    if (!auth) return;
+    if (!auth.isDemo) {
+      res.json({ ok: true, unreadCount: 0 });
+      return;
+    }
+
+    const overview = await ensureDemoShipperWorkspace();
+    const { notificationId } = req.body as { notificationId?: string };
+    for (const item of overview.notifications) {
+      if (!notificationId || notificationId === 'all' || item.id === notificationId) {
+        item.read = true;
+      }
+    }
+    overview.unreadNotificationCount = overview.notifications.filter((n) => !n.read).length;
+    await writeJsonAtomic(DEMO_SHIPPER_FILE, overview);
+    res.json({ ok: true, unreadCount: overview.unreadNotificationCount });
   });
 
   // Mount Vite dev middlewares or production static bundle

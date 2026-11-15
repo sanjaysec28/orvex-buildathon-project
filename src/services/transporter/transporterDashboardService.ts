@@ -373,3 +373,11 @@ export async function acceptDemoShipperOffer(
 ): Promise<ProtectedApiResult<{ overview: ShipperDashboardOverview }>> {
   return apiSend(`/api/shipper/offers/${encodeURIComponent(offerId)}/accept`, 'POST', {});
 }
+
+export async function markShipperNotificationsRead(notificationId?: string): Promise<
+  ProtectedApiResult<{ unreadCount: number }>
+> {
+  return apiSend('/api/shipper/notifications/read', 'POST', {
+    notificationId: notificationId ?? 'all',
+  });
+}
