@@ -2,14 +2,24 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   getOppositeRole,
+  getRoleAuthPath,
   getWorkspaceBasePath,
   isRouteInRoleWorkspace,
+  isValidRole,
   resolveRoleFromPath,
 } from './roleRouting';
 
 test('getWorkspaceBasePath returns strict role workspace roots', () => {
   assert.equal(getWorkspaceBasePath('transporter'), '/transporter');
   assert.equal(getWorkspaceBasePath('shipper'), '/shipper');
+});
+
+test('getRoleAuthPath returns distinct role-specific authentication entry routes', () => {
+  assert.equal(getRoleAuthPath('transporter'), '/auth?role=transporter');
+  assert.equal(getRoleAuthPath('shipper'), '/auth?role=shipper');
+  assert.equal(isValidRole('transporter'), true);
+  assert.equal(isValidRole('shipper'), true);
+  assert.equal(isValidRole('admin'), false);
 });
 
 test('resolveRoleFromPath isolates transporter and shipper workspaces', () => {

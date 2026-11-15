@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import { ArrowLeft, Building2, ShieldCheck, Truck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   BrandWordmark,
   Button,
@@ -10,12 +11,22 @@ import {
 } from '../../components/ui';
 import { useRoleContext } from '../../hooks/useRoleContext';
 import { firebaseAuthContract } from '../../services/auth/authContract';
-import { getWorkspaceBasePath } from '../../utils/roleRouting';
+import { getWorkspaceBasePath, isValidRole } from '../../utils/roleRouting';
 
 export function AuthFoundationPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { role, setRole } = useRoleContext();
+
+  const roleParam = searchParams.get('role');
+  const activeRole = isValidRole(roleParam) ? roleParam : role;
+
+  useEffect(() => {
+    if (isValidRole(roleParam) && roleParam !== role) {
+      setRole(roleParam);
+    }
+  }, [roleParam, role, setRole]);
 
   const openWorkspace = (targetRole: 'transporter' | 'shipper') => {
     setRole(targetRole);
@@ -55,7 +66,7 @@ export function AuthFoundationPage() {
               {t('auth.roleLabel')}
             </p>
             <p className="text-lg font-bold text-[#18364B]">
-              {role === 'transporter'
+              {activeRole === 'transporter'
                 ? t('roles.transporter.title')
                 : t('roles.shipper.title')}
             </p>
